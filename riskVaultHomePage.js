@@ -46,7 +46,7 @@
         // Search for matching claims
         const matchingClaims = sampleClaims.filter(claim => 
           claim.id.toLowerCase().includes(searchTerm) ||
-          claim.policyHolder.toLowerCase().includes(searchTerm)
+          claim.policyHolder.toLowerCase().includes(searchTerm) || claim.type.toLowerCase().includes(searchTerm)
         );
 
         resultsSection.style.display = 'block';
