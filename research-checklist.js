@@ -1,32 +1,39 @@
 function updateProgress() {
-  // Get all checked checkboxes
-  const checkedCheckboxes = Array.from(document.querySelectorAll(".checkbox-cell input[type='checkbox']")).filter((cb) => cb.checked);
-  const totalSearches = checkedCheckboxes.length;
 
-  let completedCount = 0;
-  let pendingCount = 0;
+    document.querySelectorAll(".checklist-table tbody tr").forEach(row => {
+    row.style.backgroundColor = "";
+    });
+    // Get all checked checkboxes
+    const checkedCheckboxes = Array.from(document.querySelectorAll(".checkbox-cell input[type='checkbox']")).filter((cb) => cb.checked);
+    const totalSearches = checkedCheckboxes.length;
 
-  // Analyze each checked checkbox row
-  checkedCheckboxes.forEach((cb) => {
-    const row = cb.closest("tr");
-    if (!row) return;
+    let completedCount = 0;
+    let pendingCount = 0;
 
-    const dateField = row.querySelector(".date-input");
-    const unableSelect = row.querySelector(".unable-select");
+    // Analyze each checked checkbox row
+    checkedCheckboxes.forEach((cb) => {
+        const row = cb.closest("tr");
+        if (!row) return;
 
-    // If date is filled, count as completed
-    if (dateField && dateField.value && dateField.value !== "") {
-      completedCount++;
-    }
-    // If no date but unable-select has value, count as completed
-    else if (unableSelect && unableSelect.value && unableSelect.value !== "") {
-      completedCount++;
-    }
-    // If neither date nor unable-select, count as pending
-    else {
-      pendingCount++;
-    }
-  });
+        const dateField = row.querySelector(".date-input");
+        const unableSelect = row.querySelector(".unable-select");
+
+        // If date is filled, count as completed
+        if (dateField && dateField.value && dateField.value !== "") {
+        completedCount++;
+        row.style.backgroundColor = "#62d775ff"; // Light green background for completed
+        }
+        // If no date but unable-select has value, count as completed
+        else if (unableSelect && unableSelect.value && unableSelect.value !== "") {
+        completedCount++;
+        row.style.backgroundColor = "#62d775ff"; // Light green background for completed
+        }
+        // If neither date nor unable-select, count as pending
+        else {
+        pendingCount++;
+            row.style.backgroundColor = "#ff7f7f"; // Light red background for pending
+        }
+    });
 
   // Update counters
   document.getElementById("total-searches").textContent = totalSearches;
