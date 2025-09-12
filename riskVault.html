@@ -1,1083 +1,1218 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RiskVault - Claims Management</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-        }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+      }
 
-        .header {
-            background: linear-gradient(135deg, #4a5568, #2d3748);
-            color: white;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+      .header {
+        background: linear-gradient(135deg, #4a5568, #2d3748);
+        color: white;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
 
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+      .logo-section {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-        .logo {
-            background: #e53e3e;
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 16px;
-        }
+      .logo {
+        background: #e53e3e;
+        color: white;
+        width: 28px;
+        height: 28px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 16px;
+      }
 
-        .header-title {
-            font-size: 16px;
-            font-weight: 500;
-        }
+      .header-title {
+        font-size: 16px;
+        font-weight: 500;
+      }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+      }
 
-        .user-avatar {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #cbd5e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #4a5568;
-        }
+      .user-avatar {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #cbd5e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: #4a5568;
+      }
 
-        .main-container {
-            display: flex;
-            min-height: calc(100vh - 52px);
-        }
+      .main-container {
+        display: flex;
+        min-height: calc(100vh - 52px);
+      }
 
-        .sidebar {
-            width: 250px;
-            background: white;
-            border-right: 1px solid #e2e8f0;
-            padding: 20px 0;
-        }
+      .sidebar {
+        width: 200px;
+        background: white;
+        border-right: 1px solid #e2e8f0;
+        padding: 20px 0;
+      }
 
-        .claim-header {
-            padding: 0 20px 20px;
-            border-bottom: 1px solid #e2e8f0;
-            margin-bottom: 20px;
-        }
+      .claim-header {
+        padding: 0 20px 20px;
+        border-bottom: 1px solid #e2e8f0;
+        margin-bottom: 20px;
+      }
 
-        .claim-number {
-            font-size: 18px;
-            font-weight: 600;
-            color: #2d3748;
-        }
+      .claim-number {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2d3748;
+      }
 
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            border-left: 3px solid transparent;
-        }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        border-left: 3px solid transparent;
+      }
 
-        .nav-item:hover {
-            background-color: #f7fafc;
-        }
+      .nav-item:hover {
+        background-color: #f7fafc;
+      }
 
-        .nav-item.active {
-            background-color: #ebf8ff;
-            border-left-color: #3182ce;
-            color: #3182ce;
-        }
+      .nav-item.active {
+        background-color: #ebf8ff;
+        border-left-color: #3182ce;
+        color: #3182ce;
+      }
 
-        .nav-icon {
-            margin-right: 10px;
-            font-size: 14px;
-        }
+      .nav-icon {
+        margin-right: 10px;
+        font-size: 14px;
+      }
 
-        .content-area {
-            flex: 1;
-            padding: 30px;
-            background: #f7fafc;
-        }
+      .content-area {
+        flex: 1;
+        padding: 30px;
+        background: #f7fafc;
+      }
 
-        .tab-nav {
-            display: flex;
-            gap: 30px;
-            border-bottom: 2px solid #e2e8f0;
-            margin-bottom: 30px;
-        }
+      .tab-nav {
+        display: flex;
+        gap: 30px;
+        border-bottom: 2px solid #e2e8f0;
+        margin-bottom: 30px;
+      }
 
-        .tab {
-            padding: 10px 0;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            font-weight: 500;
-            color: #718096;
-            transition: all 0.2s;
-        }
+      .tab {
+        padding: 10px 0;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        font-weight: 500;
+        color: #e94e1b;
+        transition: all 0.2s;
+        font-size: small;
+      }
 
-        .tab.active {
-            color: #3182ce;
-            border-bottom-color: #3182ce;
-        }
+      .tab.active {
+        color: #3182ce;
+        border-bottom-color: #3182ce;
+      }
 
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 30px;
-        }
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 30px;
+      }
 
-        .main-content {
-            background: white;
-            border-radius: 8px;
-            padding: 25px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            min-height: 500px;
-        }
+      .main-content {
+        background: white;
+        border-radius: 8px;
+        padding: 25px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        min-height: 500px;
+      }
 
-        .section-content {
-            display: none;
-        }
+      .section-content {
+        display: none;
+      }
 
-        .section-content.active {
-            display: block;
-        }
+      .section-content.active {
+        display: block;
+      }
 
-        .tab-content {
-            display: none;
-        }
+      .tab-content {
+        display: none;
+      }
 
-        .tab-content.active {
-            display: block;
-        }
+      .tab-content.active {
+        display: block;
+      }
 
-        .vehicle-section h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #2d3748;
-        }
+      .vehicle-section h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #2d3748;
+      }
 
-        .vehicle-image {
-            width: 100%;
-            height: 200px;
-            background: #f7fafc;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #e2e8f0;
-        }
+      .vehicle-image {
+        width: 100%;
+        height: 200px;
+        background: #f7fafc;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #e2e8f0;
+      }
 
-        .vehicle-placeholder {
-            width: 180px;
-            height: 120px;
-            background: linear-gradient(135deg, #4a5568, #2d3748);
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-        }
+      .vehicle-placeholder {
+        width: 180px;
+        height: 120px;
+        background: linear-gradient(135deg, #4a5568, #2d3748);
+        border-radius: 4px;
+        position: relative;
+        overflow: hidden;
+      }
 
-        .vehicle-placeholder::before {
-            content: '';
-            position: absolute;
-            top: 20%;
-            left: 10%;
-            right: 10%;
-            height: 15%;
-            background: #e2e8f0;
-            border-radius: 2px;
-        }
+      .vehicle-placeholder::before {
+        content: "";
+        position: absolute;
+        top: 20%;
+        left: 10%;
+        right: 10%;
+        height: 15%;
+        background: #e2e8f0;
+        border-radius: 2px;
+      }
 
-        .damage-section h4 {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #2d3748;
-        }
+      .damage-section h4 {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #2d3748;
+      }
 
-        .damage-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f1f5f9;
-        }
+      .damage-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #f1f5f9;
+      }
 
-        .damage-item:last-child {
-            border-bottom: none;
-        }
+      .damage-item:last-child {
+        border-bottom: none;
+      }
 
-        .damage-description {
-            font-size: 14px;
-            color: #4a5568;
-            flex: 1;
-        }
+      .damage-description {
+        font-size: 14px;
+        color: #4a5568;
+        flex: 1;
+      }
 
-        .severity-badge {
-            background: #fed7d7;
-            color: #c53030;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-        }
+      .severity-badge {
+        background: #fed7d7;
+        color: #c53030;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+      }
 
-        .severity-badge.estimated {
-            background: #fefcbf;
-            color: #975a16;
-        }
+      .severity-badge.estimated {
+        background: #fefcbf;
+        color: #975a16;
+      }
 
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-        }
+      .action-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 25px;
+      }
 
-        .btn {
-            padding: 10px 20px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
+      .btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.2s;
+      }
 
-        .btn-primary {
-            background: #3182ce;
-            color: white;
-        }
+      .btn-primary {
+        background: #3182ce;
+        color: white;
+      }
 
-        .btn-primary:hover {
-            background: #2c5aa0;
-        }
+      .btn-primary:hover {
+        background: #2c5aa0;
+      }
 
-        .btn-secondary {
-            background: #e2e8f0;
-            color: #4a5568;
-        }
+      .btn-secondary {
+        background: #e2e8f0;
+        color: #4a5568;
+      }
 
-        .btn-secondary:hover {
-            background: #cbd5e0;
-        }
+      .btn-secondary:hover {
+        background: #cbd5e0;
+      }
 
-        .sidebar-panel {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
+      .sidebar-panel {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
 
-        .panel-header {
-            background: #f56500;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 8px 8px 0 0;
-            font-weight: 600;
-            font-size: 14px;
-        }
+      .panel-header {
+        background: #f56500;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px 8px 0 0;
+        font-weight: 600;
+        font-size: 14px;
+      }
 
-        .panel-content {
-            padding: 20px;
-        }
+      .panel-content {
+        padding: 20px;
+      }
 
-        .info-item {
-            margin-bottom: 15px;
-        }
+      .info-item {
+        margin-bottom: 15px;
+      }
 
-        .info-label {
-            font-size: 12px;
-            color: #718096;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+      .info-label {
+        font-size: 12px;
+        color: #718096;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
 
-        .info-value {
-            font-size: 14px;
-            color: #2d3748;
-            font-weight: 500;
-        }
+      .info-value {
+        font-size: 14px;
+        color: #2d3748;
+        font-weight: 500;
+      }
 
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 10px 0;
-            font-size: 14px;
-            color: #4a5568;
-        }
+      .checkbox-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 10px 0;
+        font-size: 14px;
+        color: #4a5568;
+      }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+      .form-group {
+        margin-bottom: 20px;
+      }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #4a5568;
-            font-weight: 500;
-        }
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #4a5568;
+        font-weight: 500;
+      }
 
-        .form-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 14px;
-        }
+      .form-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 14px;
+      }
 
-        .form-input:focus {
-            outline: none;
-            border-color: #3182ce;
-            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
-        }
+      .form-input:focus {
+        outline: none;
+        border-color: #3182ce;
+        box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+      }
 
-        .form-row {
-            display: flex;
-            gap: 20px;
-        }
+      .form-row {
+        display: flex;
+        gap: 20px;
+      }
 
-        .form-row .form-group {
-            flex: 1;
-        }
+      .form-row .form-group {
+        flex: 1;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="header">
-        <div class="logo-section">
-            <div class="logo">R</div>
-            <span class="header-title">RISKVAULT - Claims Management</span>
-        </div>
-        <div class="user-info">
-            <div class="user-avatar">👤</div>
-            <span>Jane Doe</span>
-        </div>
+      <div class="logo-section">
+        <div class="logo">R</div>
+        <span class="header-title">RISKVAULT - Claims Management</span>
+      </div>
+      <div class="user-info">
+        <div class="user-avatar">👤</div>
+        <span>John Smith</span>
+      </div>
     </div>
 
     <div class="main-container">
-        <div class="sidebar">
-            <div class="claim-header">
-                <div class="claim-number">Claim File: #RV-2024-0715-A</div>
-                <div class="user-info" style="margin-top: 10px;">
-                    <div class="user-avatar">👤</div>
-                    <span style="font-size: 12px;">Jane Doe</span>
-                </div>
-            </div>
-            
-            <div class="nav-item active" data-section="claim-details-1">
-                <span class="nav-icon">🏠</span>
-                <span>Claim 1</span>
-            </div>
-            <div class="nav-item" data-section="policy-insured">
-                <span class="nav-icon">👤</span>
-                <span>Policy Insured</span>
-            </div>
-            <div class="nav-item" data-section="vehicle-details">
-                <span class="nav-icon">🚗</span>
-                <span>Vehicle Details</span>
-            </div>
-            <div class="nav-item" data-section="policy-holder">
-                <span class="nav-icon">📄</span>
-                <span>Policy Holder</span>
-            </div>
-            <div class="nav-item" style="background: #fef2e2; color: #d69e2e;" data-section="vehicle-2">
-                <span class="nav-icon">🚗</span>
-                <span>Vehicle (2)</span>
-            </div>
-            <div class="nav-item" data-section="vehicle-1">
-                <span class="nav-icon">🚗</span>
-                <span>Vehicle (1)</span>
-            </div>
-            <div class="nav-item" data-section="witnesses">
-                <span class="nav-icon">👥</span>
-                <span>Witnesses</span>
-            </div>
-            <div class="nav-item" data-section="documents">
-                <span class="nav-icon">📁</span>
-                <span>Documents</span>
-            </div>
+      <div class="sidebar">
+        <div class="claim-header">
+          <div class="claim-number">Claim File: #RV-2025-0715-A</div>
+          <div class="user-info" style="margin-top: 10px">
+            <div class="user-avatar">👤</div>
+            <span style="font-size: 12px">John Smith</span>
+          </div>
         </div>
-
-        <div class="content-area">
-            <!-- Claim Details Section -->
-            <div class="section-content active" id="claim-details-1-section">
-                <div class="tab-nav">
-                    <div class="tab active" data-tab="claim-details">Policy Details</div>
-                    <div class="tab" data-tab="payment-details">Loss Details</div>
-                    <div class="tab" data-tab="claimants">Loss Details</div>
-                    <div class="tab" data-tab="overview">Financial Details</div>
-                    <div class="tab" data-tab="rental-details">Rental Details</div>
-                    <div class="tab" data-tab="paper-estimates">Paper Estimates</div>
-                    <div class="tab" data-tab="photo-reports">Photo Reports</div>
-                    <div class="tab" data-tab="activity-log">Activity Log</div>
-                </div>
-
-                <div class="content-grid">
-                    <div class="main-content">
-                        <!-- Claim Details Tab -->
-                        <div class="tab-content active" id="claim-details">
-                            <div class="vehicle-section">
-                                <h3>Vehicle 1: Camry</h3>
-                                <div class="vehicle-image">
-                                    <div class="vehicle-placeholder"></div>
-                                </div>
-                                
-                                <div class="damage-section">
-                                    <h4>Damage Details</h4>
-                                    
-                                    <div class="damage-item">
-                                        <div class="damage-description">Front Bumper: Scratched, Misaligned</div>
-                                        <div class="severity-badge">Severity</div>
-                                    </div>
-                                    
-                                    <div class="damage-item">
-                                        <div class="damage-description">Driver Side Headlight: Cracked Casing</div>
-                                        <div class="severity-badge">Severity</div>
-                                    </div>
-                                    
-                                    <div class="damage-item">
-                                        <div class="damage-description">Front Left Fender: Dented, Scratched</div>
-                                        <div class="severity-badge">Severity</div>
-                                    </div>
-                                    
-                                    <div class="damage-item">
-                                        <div class="damage-description">Front Left Door: Light Dent, Some Marks</div>
-                                        <div class="severity-badge estimated">Estimated Cost</div>
-                                    </div>
-                                    
-                                    <div class="damage-item">
-                                        <div class="damage-description">Side Mirror Casing</div>
-                                        <div class="severity-badge estimated">Estimated Cost</div>
-                                    </div>
-                                </div>
-
-                                <div class="action-buttons">
-                                    <button class="btn btn-primary">Save Changes</button>
-                                    <button class="btn btn-secondary">View Repair History</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Payment Details Tab -->
-                        <div class="tab-content" id="payment-details">
-                            <h3>Payment Details</h3>
-                            <form class="payment-form" style="max-width: 500px; margin-top: 20px;">
-                                <div class="form-group">
-                                    <label for="cardName">Cardholder Name</label>
-                                    <input type="text" id="cardName" class="form-input" placeholder="John Doe">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="cardNumber">Card Number</label>
-                                    <input type="text" id="cardNumber" class="form-input" placeholder="4242 4242 4242 4242">
-                                </div>
-                                
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="expiryDate">Expiry Date</label>
-                                        <input type="text" id="expiryDate" class="form-input" placeholder="MM/YY">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="cvv">CVV</label>
-                                        <input type="text" id="cvv" class="form-input" placeholder="123">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="amount">Payment Amount</label>
-                                    <input type="text" id="amount" class="form-input" placeholder="$0.00">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="billingAddress">Billing Address</label>
-                                    <textarea id="billingAddress" class="form-input" placeholder="Enter your billing address" style="min-height: 80px;"></textarea>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary" style="width: 100%;">Process Payment</button>
-                            </form>
-                        </div>
-
-                        <!-- Claimants Tab -->
-                        <div class="tab-content" id="claimants">
-                            <h3>Claimants Information</h3>
-                            <div class="claimant-list" style="margin-top: 20px;">
-                                <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0;">
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                                        <h4 style="color: #2d3748;">Primary Claimant</h4>
-                                        <span style="background: #ebf8ff; color: #3182ce; padding: 4px 8px; border-radius: 4px;">Active</span>
-                                    </div>
-                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Full Name</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">John A. Smith</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Contact Number</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">(555) 123-4567</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Email</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">john.smith@email.com</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Claim Type</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">Vehicle Damage</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary" style="margin-top: 20px;">Add New Claimant</button>
-                        </div>
-
-                        <!-- Other tabs (overview, rental-details, etc.) -->
-                        <div class="tab-content" id="overview">
-                            <h3>Claim Overview</h3>
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px;">
-                                <div style="background: #f7fafc; padding: 20px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                                    <h4 style="color: #2d3748; margin-bottom: 15px;">Claim Summary</h4>
-                                    <div style="margin-bottom: 10px;">
-                                        <label style="color: #718096; font-size: 0.875rem;">Claim ID</label>
-                                        <p style="color: #2d3748; margin-top: 4px;">RV-2024-0715-A</p>
-                                    </div>
-                                    <div style="margin-bottom: 10px;">
-                                        <label style="color: #718096; font-size: 0.875rem;">Date Filed</label>
-                                        <p style="color: #2d3748; margin-top: 4px;">July 15, 2024</p>
-                                    </div>
-                                    <div style="margin-bottom: 10px;">
-                                        <label style="color: #718096; font-size: 0.875rem;">Status</label>
-                                        <p style="color: #2d3748; margin-top: 4px;">In Progress</p>
-                                    </div>
-                                </div>
-                                
-                                <div style="background: #f7fafc; padding: 20px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                                    <h4 style="color: #2d3748; margin-bottom: 15px;">Financial Summary</h4>
-                                    <div style="margin-bottom: 10px;">
-                                        <label style="color: #718096; font-size: 0.875rem;">Total Claim Amount</label>
-                                        <p style="color: #2d3748; margin-top: 4px;">$12,500.00</p>
-                                    </div>
-                                    <div style="margin-bottom: 10px;">
-                                        <label style="color: #718096; font-size: 0.875rem;">Approved Amount</label>
-                                        <p style="color: #2d3748; margin-top: 4px;">$8,500.00</p>
-                                    </div>
-                                    <div style="margin-bottom: 10px;">
-                                        <label style="color: #718096; font-size: 0.875rem;">Pending Amount</label>
-                                        <p style="color: #2d3748; margin-top: 4px;">$4,000.00</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Rental Details Tab -->
-                        <div class="tab-content" id="rental-details">
-                            <h3>Rental Vehicle Details</h3>
-                            <form style="max-width: 500px; margin-top: 20px;">
-                                <div class="form-group">
-                                    <label>Rental Company</label>
-                                    <select class="form-input">
-                                        <option>Enterprise</option>
-                                        <option>Hertz</option>
-                                        <option>Avis</option>
-                                        <option>Budget</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label>Start Date</label>
-                                        <input type="date" class="form-input">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>End Date</label>
-                                        <input type="date" class="form-input">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Vehicle Class</label>
-                                    <select class="form-input">
-                                        <option>Economy</option>
-                                        <option>Compact</option>
-                                        <option>Mid-size</option>
-                                        <option>Full-size</option>
-                                        <option>SUV</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Daily Rate</label>
-                                    <input type="text" placeholder="$0.00" class="form-input">
-                                </div>
-
-                                <button class="btn btn-primary" style="width: 100%;">Submit Rental Details</button>
-                            </form>
-                        </div>
-
-                        <!-- Paper Estimates Tab -->
-                        <div class="tab-content" id="paper-estimates">
-                            <h3>Paper Estimates</h3>
-                            <div style="margin-top: 20px;">
-                                <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                                        <h4 style="color: #2d3748;">Initial Estimate</h4>
-                                        <span style="color: #718096; font-size: 0.875rem;">July 18, 2024 11:45 AM</span>
-                                    </div>
-                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Estimate Amount</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">$8,500.00</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Shop Name</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">AutoFix Pro</p>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-secondary" style="margin-top: 15px;">View Details</button>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary" style="margin-top: 20px;">Upload New Estimate</button>
-                        </div>
-
-                        <!-- Photo Reports Tab -->
-                        <div class="tab-content" id="photo-reports">
-                            <h3>Photo Documentation</h3>
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px;">
-                                <div style="background: #f7fafc; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                                    <div style="background: #e2e8f0; height: 150px; border-radius: 4px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center;">
-                                        <span style="color: #718096;">Front View</span>
-                                    </div>
-                                    <p style="font-size: 0.875rem; color: #4a5568;">Front Damage - July 15, 2024</p>
-                                </div>
-                                <div style="background: #f7fafc; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                                    <div style="background: #e2e8f0; height: 150px; border-radius: 4px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center;">
-                                        <span style="color: #718096;">Side View</span>
-                                    </div>
-                                    <p style="font-size: 0.875rem; color: #4a5568;">Driver Side - July 15, 2024</p>
-                                </div>
-                                <div style="background: #f7fafc; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                                    <div style="background: #e2e8f0; height: 150px; border-radius: 4px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center;">
-                                        <span style="color: #718096;">Detail View</span>
-                                    </div>
-                                    <p style="font-size: 0.875rem; color: #4a5568;">Bumper Detail - July 15, 2024</p>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary" style="margin-top: 20px;">Upload New Photos</button>
-                        </div>
-
-                        <!-- Activity Log Tab -->
-                        <div class="tab-content" id="activity-log">
-                            <h3>Activity History</h3>
-                            <div style="margin-top: 20px;">
-                                <div style="background: #f7fafc; padding: 15px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #e2e8f0;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div>
-                                            <h4 style="color: #2d3748; margin-bottom: 5px;">Estimate Received</h4>
-                                            <p style="color: #718096; font-size: 0.875rem;">Initial estimate from AutoFix Pro</p>
-                                        </div>
-                                        <span style="color: #718096; font-size: 0.875rem;">July 16, 2024 2:30 PM</span>
-                                    </div>
-                                </div>
-
-                                <div style="background: #f7fafc; padding: 15px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #e2e8f0;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div>
-                                            <h4 style="color: #2d3748; margin-bottom: 5px;">Payment Processed</h4>
-                                            <p style="color: #718096; font-size: 0.875rem;">Initial payment of $8,500.00 approved</p>
-                                        </div>
-                                        <span style="color: #718096; font-size: 0.875rem;">July 17, 2024 10:00 AM</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="sidebar-panel">
-                        <div class="panel-header">Damage Details</div>
-                        <div class="panel-content">
-                            <div class="info-item">
-                                <div class="info-label">Dispute 1: Summary</div>
-                            </div>
-                            
-                            <div class="info-item">
-                                <div class="info-label">Vehicle ID</div>
-                                <div class="info-value">F-1-V6, Pinkmiling</div>
-                            </div>
-                            
-                            <div class="info-item">
-                                <div class="info-label">Claim Status</div>
-                                <div class="info-value">In Review</div>
-                            </div>
-                            
-                            <div class="info-item">
-                                <div class="info-label">Estimated Cost</div>
-                                <div class="info-value">Deductible $1,000</div>
-                            </div>
-                            
-                            <div class="info-item">
-                                <div class="info-label">Deductible $1,000</div>
-                                <div class="info-value">$8,500.00</div>
-                            </div>
-                            
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="salvage">
-                                <label for="salvage">Structural Defect</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Policy Insured Section -->
-            <div class="section-content" id="policy-insured-section">
-                <div class="tab-nav">
-                    <div class="tab active" data-tab="personal-info">Personal Information</div>
-                    <div class="tab" data-tab="contact-details">Contact Details</div>
-                    <div class="tab" data-tab="employment">Employment</div>
-                    <div class="tab" data-tab="beneficiaries">Beneficiaries</div>
-                    <div class="tab" data-tab="coverage-history">Coverage History</div>
-                    <div class="tab" data-tab="policy-documents">Policy Documents</div>
-                </div>
-
-                <div class="content-grid">
-                    <div class="main-content">
-                        <!-- Personal Information Tab -->
-                        <div class="tab-content active" id="personal-info">
-                            <h3>Personal Information</h3>
-                            <form style="max-width: 600px; margin-top: 20px;">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label>First Name</label>
-                                        <input type="text" class="form-input" value="John" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Last Name</label>
-                                        <input type="text" class="form-input" value="Smith" readonly>
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label>Date of Birth</label>
-                                        <input type="date" class="form-input" value="1985-03-15" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Gender</label>
-                                        <select class="form-input" disabled>
-                                            <option selected>Male</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label>Social Security Number</label>
-                                        <input type="text" class="form-input" value="***-**-1234" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Driver's License</label>
-                                        <input type="text" class="form-input" value="DL123456789" readonly>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Marital Status</label>
-                                    <select class="form-input" disabled>
-                                        <option selected>Married</option>
-                                    </select>
-                                </div>
-
-                                <div class="action-buttons">
-                                    <button type="button" class="btn btn-primary">Edit Information</button>
-                                    <button type="button" class="btn btn-secondary">Print Summary</button>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!-- Contact Details Tab -->
-                        <div class="tab-content" id="contact-details">
-                            <h3>Contact Information</h3>
-                            <form style="max-width: 600px; margin-top: 20px;">
-                                <div class="form-group">
-                                    <label>Primary Phone</label>
-                                    <input type="tel" class="form-input" value="(555) 123-4567" readonly>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Secondary Phone</label>
-                                    <input type="tel" class="form-input" value="(555) 987-6543" readonly>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Email Address</label>
-                                    <input type="email" class="form-input" value="john.smith@email.com" readonly>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Home Address</label>
-                                    <textarea class="form-input" readonly style="min-height: 80px;">123 Main Street
-                                    Apartment 4B
-                                    Springfield, IL 62701</textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Mailing Address (if different)</label>
-                                    <textarea class="form-input" readonly style="min-height: 60px;">Same as home address</textarea>
-                                </div>
-
-                                <div class="action-buttons">
-                                    <button type="button" class="btn btn-primary">Update Contact Info</button>
-                                    <button type="button" class="btn btn-secondary">Send Verification</button>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!-- Employment Tab -->
-                        <div class="tab-content" id="employment">
-                            <h3>Employment Information</h3>
-                            <div style="max-width: 600px; margin-top: 20px;">
-                                <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
-                                    <h4 style="color: #2d3748; margin-bottom: 15px;">Current Employment</h4>
-                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Company Name</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">TechCorp Solutions</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Job Title</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">Senior Software Engineer</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Annual Income</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">$85,000</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Years Employed</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">3.5 years</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div style="background: #f7fafc; padding: 20px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                                    <h4 style="color: #2d3748; margin-bottom: 15px;">Work Address</h4>
-                                    <p style="color: #2d3748;">456 Business Park Drive<br>Suite 200<br>Springfield, IL 62702</p>
-                                </div>
-
-                                <div class="action-buttons">
-                                    <button type="button" class="btn btn-primary">Update Employment</button>
-                                    <button type="button" class="btn btn-secondary">Request Verification</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Beneficiaries Tab -->
-                        <div class="tab-content" id="beneficiaries">
-                            <h3>Policy Beneficiaries</h3>
-                            <div style="margin-top: 20px;">
-                                <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0;">
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                                        <h4 style="color: #2d3748;">Primary Beneficiary</h4>
-                                        <span style="background: #ebf8ff; color: #3182ce; padding: 4px 8px; border-radius: 4px;">100%</span>
-                                    </div>
-                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Full Name</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">Mary J. Smith</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Relationship</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">Spouse</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Date of Birth</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">April 22, 1987</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Contact</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">(555) 234-5678</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary" style="margin-top: 20px;">Add Beneficiary</button>
-                        </div>
-
-                        <!-- Coverage History Tab -->
-                        <div class="tab-content" id="coverage-history">
-                            <h3>Coverage History</h3>
-                            <div style="margin-top: 20px;">
-                                <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                                        <h4 style="color: #2d3748;">Current Policy</h4>
-                                        <span style="background: #c6f6d5; color: #276749; padding: 4px 8px; border-radius: 4px;">Active</span>
-                                    </div>
-                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Policy Number</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">RV-AUTO-2024-001234</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Effective Date</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">January 1, 2024</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Expiration Date</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">December 31, 2024</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Premium</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">$1,200/year</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                                        <h4 style="color: #2d3748;">Previous Policy</h4>
-                                        <span style="background: #fed7d7; color: #c53030; padding: 4px 8px; border-radius: 4px;">Expired</span>
-                                    </div>
-                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Policy Number</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">RV-AUTO-2023-001234</p>
-                                        </div>
-                                        <div>
-                                            <label style="color: #718096; font-size: 0.875rem;">Coverage Period</label>
-                                            <p style="color: #2d3748; margin-top: 4px;">Jan 1, 2023 - Dec 31, 2023</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Policy Documents Tab -->
-                        <div class="tab-content" id="policy-documents">
-                            <h3>Policy Documents</h3>
-                            <div style="margin-top: 20px;">
-                                <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div>
-                                            <h4 style="color: #2d3748; margin-bottom: 5px;">Auto Insurance Policy 2024</h4>
-                                            <p style="color: #718096; font-size: 0.875rem;">PDF Document - 2.3 MB</p>
-                                        </div>
-                                        <div style="display: flex; gap: 10px;">
-                                            <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px;">View</button>
-                                            <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px;">Download</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div>
-                                            <h4 style="color: #2d3748; margin-bottom: 5px;">Coverage Summary</h4>
-                                            <p style="color: #718096; font-size: 0.875rem;">PDF Document - 1.1 MB</p>
-                                        </div>
-                                        <div style="display: flex; gap: 10px;">
-                                            <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px;">View</button>
-                                            <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px;">Download</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div>
-                                            <h4 style="color: #2d3748; margin-bottom: 5px;">Driver's License Copy</h4>
-                                            <p style="color: #718096; font-size: 0.875rem;">JPEG Image - 450 KB</p>
-                                        </div>
-                                        <div style="display: flex; gap: 10px;">
-                                            <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px;">View</button>
-                                            <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px;">Download</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary" style="margin-top: 20px;">Upload Document</button>
-                        </div>
-                    </div>
-
-                    <div class="sidebar-panel">
-                        <div class="panel-header">Policy Information</div>
-                        <div class="panel-content">
-                            <div class="info-item">
-                                <div class="info-label">Policy Number</div>
-                                <div class="info-value">RV-AUTO-2024-001234</div>
-                            </div>
-                            
-                            <div class="info-item">
-                                <div class="info-label">Policy Holder</div>
-                                <div class="info-value">John A. Smith</div>
-                            </div>
-                            
-                            <div class="info-item">
-                                <div class="info-label">Coverage Type</div>
-                                <div class="info-value">Comprehensive Auto</div>
-                            </div>
-                            
-                            <div class="info-item">
-                                <div class="info-label">Premium</div>
-                                <div class="info-value">$1,200/year</div>
-                            </div>
-                            
-                            <div class="info-item">
-                                <div class="info-label">Deductible</div>
-                                <div class="info-value">$1,000</div>
-                            </div>
-                            
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="notifications" checked>
-                                <label for="notifications">Email Notifications</label>
-                            </div>
-                            
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="autopay" checked>
-                                <label for="autopay">Auto Pay Enabled</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Additional sections can be added here for other navigation items -->
-            <div class="section-content" id="vehicle-details-section">
-                <div class="main-content" style="grid-column: 1 / -1;">
-                    <h3>Vehicle Details</h3>
-                    <p style="margin-top: 20px; color: #718096;">Vehicle details section is under development.</p>
-                </div>
-            </div>
-
-            <div class="section-content" id="policy-holder-section">
-                <div class="main-content" style="grid-column: 1 / -1;">
-                    <h3>Policy Holder Information</h3>
-                    <p style="margin-top: 20px; color: #718096;">Policy holder section is under development.</p>
+        <div class="">
+          <button class="btn btn-primary" style="margin: 0 0 20px 10px" id="add-btn">Add</button>
+        </div>
+        <div id="area1" style="flex-direction: column; align-items: flex-start;">
+            <div class="nav-item active" data-section="policy-details-1">
+                <div>
+                    <span class="nav-icon">🏠</span>
+                    <span>Claim 1</span>
                 </div>
             </div>
         </div>
+        
+        
+        <hr>
+        <div class="nav-item" data-section="policy-insured">
+          <span class="nav-icon">👤</span>
+          <span>Policy Insured</span>
+        </div>
+        <div class="nav-item" data-section="vehicle-details">
+          <span class="nav-icon">🚗</span>
+          <span>Vehicle Details</span>
+        </div>
+        <div class="nav-item" data-section="policy-holder">
+          <span class="nav-icon">📄</span>
+          <span>Policy Holder</span>
+        </div>
+        <hr>
+        <div class="nav-item" data-section="documents">
+          <span class="nav-icon">📁</span>
+          <span>Documents</span>
+        </div>
+      </div>
+
+      <div class="content-area">
+        <!-- Claim Details Section -->
+        <div class="section-content active" id="policy-details-1-section">
+          <div class="tab-nav">
+            <div class="tab active" data-tab="policy-details">Policy Details</div>
+            <div class="tab" data-tab="accident-details">Accident Details</div>
+            <div class="tab" data-tab="claimants">Claimant Information</div>
+            <div class="tab" data-tab="TPD-details">TPV Details</div>
+            <div class="tab" data-tab="notes">Notes</div>
+            <div class="tab" data-tab="paper-estimates">Paper Estimates</div>
+            <div class="tab" data-tab="photo-reports">Photo Reports</div>
+            <div class="tab" data-tab="activity-log">Activity Log</div>
+          </div>
+
+          <div class="content-grid">
+            <div class="main-content">
+              <!-- Claim Details Tab -->
+              <div class="tab-content active" id="policy-details">
+                <h3>Policy Information</h3>
+                <div class="claimant-list" style="margin-top: 20px">
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px">
+                      <h4 style="color: #2d3748">Primary Claimant</h4>
+                      <span style="background: #ebf8ff; color: #3182ce; padding: 4px 8px; border-radius: 4px">Active</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Full Name</label>
+                        <p style="color: #2d3748; margin-top: 4px">John Smith</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Policy Number</label>
+                        <p style="color: #2d3748; margin-top: 4px">AV123456</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Policy Type</label>
+                        <p style="color: #2d3748; margin-top: 4px">Fully Comp</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">PH DOB</label>
+                        <p style="color: #2d3748; margin-top: 4px">13/11/1973</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">VRN</label>
+                        <p style="color: #2d3748; margin-top: 4px">LS24 ABC</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Make & Model</label>
+                        <p style="color: #2d3748; margin-top: 4px">Ford / Fiesta ST</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">PH Engineer/Garage</label>
+                        <p style="color: #2d3748; margin-top: 4px">Petes Motors</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Policy Inception</label>
+                        <p style="color: #2d3748; margin-top: 4px">04/05/2025</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Payment Details Tab -->
+              <div class="tab-content" id="accident-details">
+                <h3>Accident Information</h3>
+                <div class="claimant-list" style="margin-top: 20px">
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Date and Time of Incident</label>
+                        <p style="color: #2d3748; margin-top: 4px">12/09/2025 - 14:32</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Accident Location</label>
+                        <p style="color: #2d3748; margin-top: 4px">14 Green Road, Norwich, NT6 8PX</p>
+                      </div>
+                      <div style="grid-column: 1 / -1">
+                        <label style="color: #718096; font-size: 0.875rem">Accident Circumstances</label>
+                        <p style="color: #2d3748; margin-top: 4px; background: #f7fafc; padding: 16px; border-radius: 6px; font-size: 1rem">
+                          In this fictional insurance claim, the incident occurred on September 12, 2025, at 4:45 PM BST at the intersection of High Street and Station Road. The policyholder, driving a 2005 Ford Focus with the VRN AB05 CDE, was traveling eastbound on High Street and had a green light.<br />
+                          As they entered the intersection, a black Vauxhall Corsa, VRN YF73 ZYX, failed to stop at a red light while traveling southbound on Station Road, colliding with the front passenger side of the Ford Focus. The driver of the other vehicle admitted fault at the scene. The police were called, and a witness was present. The policyholder's vehicle is undrivable and has significant damage.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Claimants Tab -->
+              <div class="tab-content" id="claimants">
+                <h3>Claimants Vehicle Information</h3>
+                <div class="claimant-list" style="margin-top: 20px">
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">VRN</label>
+                        <p style="color: #2d3748; margin-top: 4px">TT24 AKL</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Make & Model</label>
+                        <p style="color: #2d3748; margin-top: 4px">Ford / Focus</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">TPI - (INC Policy Number)</label>
+                        <p style="color: #2d3748; margin-top: 4px">INC-987654321</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Policy Inception</label>
+                        <p style="color: #2d3748; margin-top: 4px">04/04/2025</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Policy Length</label>
+                        <p style="color: #2d3748; margin-top: 4px">125 Days</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">TP Payment Details</label>
+                        <p style="color: #2d3748; margin-top: 4px">23-54-74 53478954</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <h3>Claimants Information</h3>
+                <div class="claimant-list" style="margin-top: 20px">
+                  <details style="background: #f7fafc; padding: 0; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <summary style="padding: 20px; font-weight: 600; font-size: 1rem; color: #2d3748; cursor: pointer; border-radius: 6px 6px 0 0">Claimant: John Smith</summary>
+                    <div style="padding: 20px">
+                      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Occupant</label>
+                          <p style="color: #2d3748; margin-top: 4px">Yes</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Claimant Name</label>
+                          <p style="color: #2d3748; margin-top: 4px">John Smith</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Claimant DOB</label>
+                          <p style="color: #2d3748; margin-top: 4px">10/11/1987</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Claimant Address</label>
+                          <p style="color: #2d3748; margin-top: 4px">9 Smiths Road, Hull</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Claimant Postcode</label>
+                          <p style="color: #2d3748; margin-top: 4px">HR5 6TF</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Telephone Number</label>
+                          <p style="color: #2d3748; margin-top: 4px">07876 453765</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Email Address</label>
+                          <p style="color: #2d3748; margin-top: 4px">test@Gmail.Com</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">NI Number</label>
+                          <p style="color: #2d3748; margin-top: 4px">NC566654B</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Occupation</label>
+                          <p style="color: #2d3748; margin-top: 4px">Farmer</p>
+                        </div>
+                      </div>
+                    </div>
+                  </details>
+                  <details style="background: #f7fafc; padding: 0; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <summary style="padding: 20px; font-weight: 600; font-size: 1rem; color: #2d3748; cursor: pointer; border-radius: 6px 6px 0 0">Claimant: Hannnah Long</summary>
+                    <div style="padding: 20px">
+                      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Occupant</label>
+                          <p style="color: #2d3748; margin-top: 4px">Yes</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Claimant Name</label>
+                          <p style="color: #2d3748; margin-top: 4px">Hannnah Long</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Claimant DOB</label>
+                          <p style="color: #2d3748; margin-top: 4px">13/08/1992</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Claimant Address</label>
+                          <p style="color: #2d3748; margin-top: 4px">32 Silver Road, Norwich</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Claimant Postcode</label>
+                          <p style="color: #2d3748; margin-top: 4px">NT5 6TF</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Telephone Number</label>
+                          <p style="color: #2d3748; margin-top: 4px">07876 123765</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Email Address</label>
+                          <p style="color: #2d3748; margin-top: 4px">Hannah@Gmail.Com</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">NI Number</label>
+                          <p style="color: #2d3748; margin-top: 4px">LO566654B</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Occupation</label>
+                          <p style="color: #2d3748; margin-top: 4px">Surgeon</p>
+                        </div>
+                      </div>
+                    </div>
+                  </details>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 20px">Add New Claimant</button>
+              </div>
+
+                <div class="tab-content" id="TPD-details">
+                <h3>TPV Information</h3>
+                <div class="claimant-list" style="margin-top: 20px">
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Engineer - Address Included</label>
+                        <p style="color: #2d3748; margin-top: 4px"><strong>James Smith</strong> - 65 Mill Road, Norwich, NY7 8UH</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">TPV Inspection Address</label>
+                        <p style="color: #2d3748; margin-top: 4px"><strong>ABC Motors</strong> - 5 Green Lane, Norwich, NF6 6YH</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">TPV - Recovery/Storage Address</label>
+                        <p style="color: #2d3748; margin-top: 4px"><strong>VTG Recoveries</strong> - 88 Ling Lane, Norwich, NH6 5RF</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">TP AMC - Address Included</label>
+                        <p style="color: #2d3748; margin-top: 4px"><strong>LKI Ltd</strong> - Friends Tower, Norwich, NT5 7YH</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <h3>Law Firm Information</h3>
+                <div class="claimant-list" style="margin-top: 20px">
+                  <details style="background: #f7fafc; padding: 0; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <summary style="padding: 20px; font-weight: 600; font-size: 1rem; color: #2d3748; cursor: pointer; border-radius: 6px 6px 0 0">Claimant: John Smith</summary>
+                    <div style="padding: 20px">
+                      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Claimant Law Firm</label>
+                          <p style="color: #2d3748; margin-top: 4px">Mills & Co</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Fee/Earner Reference</label>
+                          <p style="color: #2d3748; margin-top: 4px">Ref45/876</p>
+                        </div>
+                      </div>
+                    </div>
+                  </details>
+                  <details style="background: #f7fafc; padding: 0; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <summary style="padding: 20px; font-weight: 600; font-size: 1rem; color: #2d3748; cursor: pointer; border-radius: 6px 6px 0 0">Claimant: Hannnah Long</summary>
+                    <div style="padding: 20px">
+                      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Claimant Law Firm</label>
+                          <p style="color: #2d3748; margin-top: 4px">M Saville & Partners</p>
+                        </div>
+                        <div>
+                          <label style="color: #718096; font-size: 0.875rem">Fee/Earner Reference</label>
+                          <p style="color: #2d3748; margin-top: 4px">Ref67/876</p>
+                        </div>
+                      </div>
+                    </div>
+                  </details>
+                </div>
+
+                <button class="btn btn-primary" style="margin-top: 20px">Add New Claimant</button>
+              </div>
+
+              <!-- Other tabs (overview, notes, etc.) -->
+              <div class="tab-content" id="overview1">
+                <h3>Claim Overview</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px">
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; border: 1px solid #e2e8f0">
+                    <h4 style="color: #2d3748; margin-bottom: 15px">Claim Summary</h4>
+                    <div style="margin-bottom: 10px">
+                      <label style="color: #718096; font-size: 0.875rem">Claim ID</label>
+                      <p style="color: #2d3748; margin-top: 4px">RV-2025-0715-A</p>
+                    </div>
+                    <div style="margin-bottom: 10px">
+                      <label style="color: #718096; font-size: 0.875rem">Date Filed</label>
+                      <p style="color: #2d3748; margin-top: 4px">July 15, 2025</p>
+                    </div>
+                    <div style="margin-bottom: 10px">
+                      <label style="color: #718096; font-size: 0.875rem">Status</label>
+                      <p style="color: #2d3748; margin-top: 4px">In Progress</p>
+                    </div>
+                  </div>
+
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; border: 1px solid #e2e8f0">
+                    <h4 style="color: #2d3748; margin-bottom: 15px">Financial Summary</h4>
+                    <div style="margin-bottom: 10px">
+                      <label style="color: #718096; font-size: 0.875rem">Total Claim Amount</label>
+                      <p style="color: #2d3748; margin-top: 4px">£12,500.00</p>
+                    </div>
+                    <div style="margin-bottom: 10px">
+                      <label style="color: #718096; font-size: 0.875rem">Approved Amount</label>
+                      <p style="color: #2d3748; margin-top: 4px">£1,223.87</p>
+                    </div>
+                    <div style="margin-bottom: 10px">
+                      <label style="color: #718096; font-size: 0.875rem">Pending Amount</label>
+                      <p style="color: #2d3748; margin-top: 4px">£4,000.00</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rental Details Tab -->
+              <div class="tab-content" id="notes">
+                <h3>Notes</h3>
+                <div class="claimant-list" style="margin-top: 20px">
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                      <div style="grid-column: 1 / -1">
+                        <label style="color: #718096; font-size: 0.875rem">Notes</label>
+                        <p style="color: #2d3748; margin-top: 4px; background: #f7fafc; padding: 16px; border-radius: 6px; font-size: 1rem">
+                          In this fictional insurance claim, the incident occurred on September 12, 2025, at 4:45 PM BST at the intersection of High Street and Station Road. The policyholder, driving a 2005 Ford Focus with the VRN AB05 CDE, was traveling eastbound on High Street and had a green light.<br />
+                          As they entered the intersection, a black Vauxhall Corsa, VRN YF73 ZYX, failed to stop at a red light while traveling southbound on Station Road, colliding with the front passenger side of the Ford Focus. The driver of the other vehicle admitted fault at the scene. The police were called, and a witness was present. The policyholder's vehicle is undrivable and has significant damage.
+                        </p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Position Of File</label>
+                        <p style="color: #2d3748; margin-top: 4px">TBC</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Outstanding Reserves</label>
+                        <p style="color: #2d3748; margin-top: 4px">£1,350.35</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Payments</label>
+                        <p style="color: #2d3748; margin-top: 4px">£1,223.87</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Identified From </label>
+                        <p style="color: #2d3748; margin-top: 4px">TBC</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Paper Estimates Tab -->
+              <div class="tab-content" id="paper-estimates">
+                <h3>Paper Estimates</h3>
+                <div style="margin-top: 20px">
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px">
+                      <h4 style="color: #2d3748">Initial Estimate</h4>
+                      <span style="color: #718096; font-size: 0.875rem">July 18, 2025 11:45 AM</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Estimate Amount</label>
+                        <p style="color: #2d3748; margin-top: 4px">£1,223.87</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Shop Name</label>
+                        <p style="color: #2d3748; margin-top: 4px">AutoFix Pro</p>
+                      </div>
+                    </div>
+                    <button class="btn btn-secondary" style="margin-top: 15px">View Details</button>
+                  </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 20px">Upload New Estimate</button>
+              </div>
+
+              <!-- Photo Reports Tab -->
+              <div class="tab-content" id="photo-reports">
+                <h3>Photo Documentation</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px">
+                  <div style="background: #f7fafc; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0">
+                    <div style="background: #e2e8f0; height: 150px; border-radius: 4px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center">
+                      <span style="color: #718096">Front View</span>
+                    </div>
+                    <p style="font-size: 0.875rem; color: #4a5568">Front Damage - July 15, 2025</p>
+                  </div>
+                  <div style="background: #f7fafc; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0">
+                    <div style="background: #e2e8f0; height: 150px; border-radius: 4px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center">
+                      <span style="color: #718096">Side View</span>
+                    </div>
+                    <p style="font-size: 0.875rem; color: #4a5568">Driver Side - July 15, 2025</p>
+                  </div>
+                  <div style="background: #f7fafc; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0">
+                    <div style="background: #e2e8f0; height: 150px; border-radius: 4px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center">
+                      <span style="color: #718096">Detail View</span>
+                    </div>
+                    <p style="font-size: 0.875rem; color: #4a5568">Bumper Detail - July 15, 2025</p>
+                  </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 20px">Upload New Photos</button>
+              </div>
+
+              <!-- Activity Log Tab -->
+              <div class="tab-content" id="activity-log">
+                <h3>Activity History</h3>
+                <div style="margin-top: 20px">
+                  <div style="background: #f7fafc; padding: 15px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #e2e8f0">
+                    <div style="display: flex; justify-content: space-between; align-items: center">
+                      <div>
+                        <h4 style="color: #2d3748; margin-bottom: 5px">Estimate Received</h4>
+                        <p style="color: #718096; font-size: 0.875rem">Initial estimate from AutoFix Pro</p>
+                      </div>
+                      <span style="color: #718096; font-size: 0.875rem">July 16, 2025 2:30 PM</span>
+                    </div>
+                  </div>
+
+                  <div style="background: #f7fafc; padding: 15px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #e2e8f0">
+                    <div style="display: flex; justify-content: space-between; align-items: center">
+                      <div>
+                        <h4 style="color: #2d3748; margin-bottom: 5px">Payment Processed</h4>
+                        <p style="color: #718096; font-size: 0.875rem">Initial payment of £1,223.87 approved</p>
+                      </div>
+                      <span style="color: #718096; font-size: 0.875rem">July 17, 2025 10:00 AM</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-panel">
+              <div class="panel-header">Damage Details</div>
+              <div class="panel-content">
+                <div class="info-item">
+                  <div class="info-label">Dispute 1: Summary</div>
+                </div>
+
+                <div class="info-item">
+                  <div class="info-label">Vehicle ID</div>
+                  <div class="info-value">TBC</div>
+                </div>
+
+                <div class="info-item">
+                  <div class="info-label">Claim Status</div>
+                  <div class="info-value">In Review</div>
+                </div>
+
+                <div class="info-item">
+                  <div class="info-label">Estimated Cost</div>
+                  <div class="info-value">£3,000</div>
+                </div>
+
+                <div class="checkbox-item">
+                  <input type="checkbox" id="salvage" />
+                  <label for="salvage">Structural Defect</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Policy Insured Section -->
+        <div class="section-content" id="policy-insured-section">
+          <div class="tab-nav">
+            <div class="tab active" data-tab="personal-info">Personal Information</div>
+            <div class="tab" data-tab="contact-details">Contact Details</div>
+            <div class="tab" data-tab="employment">Employment</div>
+            <div class="tab" data-tab="beneficiaries">Beneficiaries</div>
+            <div class="tab" data-tab="coverage-history">Coverage History</div>
+            <div class="tab" data-tab="policy-documents">Policy Documents</div>
+          </div>
+
+          <div class="content-grid">
+            <div class="main-content">
+              <!-- Personal Information Tab -->
+              <div class="tab-content active" id="personal-info">
+                <h3>Personal Information</h3>
+                <form style="max-width: 600px; margin-top: 20px">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>First Name</label>
+                      <input type="text" class="form-input" value="John" readonly />
+                    </div>
+                    <div class="form-group">
+                      <label>Last Name</label>
+                      <input type="text" class="form-input" value="Smith" readonly />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Date of Birth</label>
+                      <input type="date" class="form-input" value="1985-03-15" readonly />
+                    </div>
+                    <div class="form-group">
+                      <label>Gender</label>
+                      <select class="form-input">
+                        <option selected>Male</option>
+                        <option selected>Female</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <!-- <div class="form-group">
+                      <label>Social Security Number</label>
+                      <input type="text" class="form-input" value="***-**-1234" readonly />
+                    </div> -->
+                    <div class="form-group">
+                      <label>Driver's License</label>
+                      <input type="text" class="form-input" value="DL123456789" readonly />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Marital Status</label>
+                    <select class="form-input">
+                      <option selected>Married</option>
+                      <option selected>Single</option>
+                    </select>
+                  </div>
+
+                  <div class="action-buttons">
+                    <button type="button" class="btn btn-primary">Edit Information</button>
+                    <button type="button" class="btn btn-secondary">Print Summary</button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Contact Details Tab -->
+              <div class="tab-content" id="contact-details">
+                <h3>Contact Information</h3>
+                <form style="max-width: 600px; margin-top: 20px">
+                  <div class="form-group">
+                    <label>Primary Phone</label>
+                    <input type="tel" class="form-input" value="07243 634758" readonly />
+                  </div>
+
+                  <div class="form-group">
+                    <label>Secondary Phone</label>
+                    <input type="tel" class="form-input" value="07765 874657" readonly />
+                  </div>
+
+                  <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" class="form-input" value="john.smith@email.com" readonly />
+                  </div>
+
+                  <div class="form-group">
+                    <label>Home Address</label>
+                    <textarea class="form-input" readonly style="min-height: 80px">123 Main Street, Norwich</textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Mailing Address (if different)</label>
+                    <textarea class="form-input" readonly style="min-height: 60px">Same as home address</textarea>
+                  </div>
+
+                  <div class="action-buttons">
+                    <button type="button" class="btn btn-primary">Update Contact Info</button>
+                    <button type="button" class="btn btn-secondary">Send Verification</button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Employment Tab -->
+              <div class="tab-content" id="employment">
+                <h3>Employment Information</h3>
+                <div style="max-width: 600px; margin-top: 20px">
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #e2e8f0">
+                    <h4 style="color: #2d3748; margin-bottom: 15px">Current Employment</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Company Name</label>
+                        <p style="color: #2d3748; margin-top: 4px">TechCorp Solutions</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Job Title</label>
+                        <p style="color: #2d3748; margin-top: 4px">Senior Software Engineer</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Annual Income</label>
+                        <p style="color: #2d3748; margin-top: 4px">£85,000</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Years Employed</label>
+                        <p style="color: #2d3748; margin-top: 4px">3.5 years</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; border: 1px solid #e2e8f0">
+                    <h4 style="color: #2d3748; margin-bottom: 15px">Work Address</h4>
+                    <p style="color: #2d3748">456 Business Park Drive<br />Suite 200<br />Norwich</p>
+                  </div>
+
+                  <div class="action-buttons">
+                    <button type="button" class="btn btn-primary">Update Employment</button>
+                    <button type="button" class="btn btn-secondary">Request Verification</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Beneficiaries Tab -->
+              <div class="tab-content" id="beneficiaries">
+                <h3>Policy Beneficiaries</h3>
+                <div style="margin-top: 20px">
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px">
+                      <h4 style="color: #2d3748">Primary Beneficiary</h4>
+                      <span style="background: #ebf8ff; color: #3182ce; padding: 4px 8px; border-radius: 4px">100%</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Full Name</label>
+                        <p style="color: #2d3748; margin-top: 4px">Mary J. Smith</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Relationship</label>
+                        <p style="color: #2d3748; margin-top: 4px">Spouse</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Date of Birth</label>
+                        <p style="color: #2d3748; margin-top: 4px">April 22, 1987</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Contact</label>
+                        <p style="color: #2d3748; margin-top: 4px">07786 545656</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 20px">Add Beneficiary</button>
+              </div>
+
+              <!-- Coverage History Tab -->
+              <div class="tab-content" id="coverage-history">
+                <h3>Coverage History</h3>
+                <div style="margin-top: 20px">
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px">
+                      <h4 style="color: #2d3748">Current Policy</h4>
+                      <span style="background: #c6f6d5; color: #276749; padding: 4px 8px; border-radius: 4px">Active</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Policy Number</label>
+                        <p style="color: #2d3748; margin-top: 4px">RV-AUTO-2025-001234</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Effective Date</label>
+                        <p style="color: #2d3748; margin-top: 4px">January 1, 2025</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Expiration Date</label>
+                        <p style="color: #2d3748; margin-top: 4px">December 31, 2025</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Premium</label>
+                        <p style="color: #2d3748; margin-top: 4px">£1,200/year</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px">
+                      <h4 style="color: #2d3748">Previous Policy</h4>
+                      <span style="background: #fed7d7; color: #c53030; padding: 4px 8px; border-radius: 4px">Expired</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px">
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Policy Number</label>
+                        <p style="color: #2d3748; margin-top: 4px">RV-AUTO-2023-001234</p>
+                      </div>
+                      <div>
+                        <label style="color: #718096; font-size: 0.875rem">Coverage Period</label>
+                        <p style="color: #2d3748; margin-top: 4px">Jan 1, 2023 - Dec 31, 2023</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Policy Documents Tab -->
+              <div class="tab-content" id="policy-documents">
+                <h3>Policy Documents</h3>
+                <div style="margin-top: 20px">
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <div style="display: flex; justify-content: space-between; align-items: center">
+                      <div>
+                        <h4 style="color: #2d3748; margin-bottom: 5px">Auto Insurance Policy 2025</h4>
+                        <p style="color: #718096; font-size: 0.875rem">PDF Document - 2.3 MB</p>
+                      </div>
+                      <div style="display: flex; gap: 10px">
+                        <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px">View</button>
+                        <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px">Download</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <div style="display: flex; justify-content: space-between; align-items: center">
+                      <div>
+                        <h4 style="color: #2d3748; margin-bottom: 5px">Coverage Summary</h4>
+                        <p style="color: #718096; font-size: 0.875rem">PDF Document - 1.1 MB</p>
+                      </div>
+                      <div style="display: flex; gap: 10px">
+                        <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px">View</button>
+                        <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px">Download</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="background: #f7fafc; padding: 20px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e2e8f0">
+                    <div style="display: flex; justify-content: space-between; align-items: center">
+                      <div>
+                        <h4 style="color: #2d3748; margin-bottom: 5px">Driver's License Copy</h4>
+                        <p style="color: #718096; font-size: 0.875rem">JPEG Image - 450 KB</p>
+                      </div>
+                      <div style="display: flex; gap: 10px">
+                        <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px">View</button>
+                        <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px">Download</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 20px">Upload Document</button>
+              </div>
+            </div>
+
+            <div class="sidebar-panel">
+              <div class="panel-header">Policy Information</div>
+              <div class="panel-content">
+                <div class="info-item">
+                  <div class="info-label">Policy Number</div>
+                  <div class="info-value">RV-AUTO-2025-001234</div>
+                </div>
+
+                <div class="info-item">
+                  <div class="info-label">Policy Holder</div>
+                  <div class="info-value">John Smith</div>
+                </div>
+
+                <div class="info-item">
+                  <div class="info-label">Coverage Type</div>
+                  <div class="info-value">Comprehensive Auto</div>
+                </div>
+
+                <div class="info-item">
+                  <div class="info-label">Premium</div>
+                  <div class="info-value">£1,200/year</div>
+                </div>
+
+                <div class="info-item">
+                  <div class="info-label">Deductible</div>
+                  <div class="info-value">£1,000</div>
+                </div>
+
+                <div class="checkbox-item">
+                  <input type="checkbox" id="notifications" checked />
+                  <label for="notifications">Email Notifications</label>
+                </div>
+
+                <div class="checkbox-item">
+                  <input type="checkbox" id="autopay" checked />
+                  <label for="autopay">Auto Pay Enabled</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional sections can be added here for other navigation items -->
+        <div class="section-content" id="vehicle-details-section">
+          <div class="main-content" style="grid-column: 1 / -1">
+            <h3>Vehicle Details</h3>
+            <p style="margin-top: 20px; color: #718096">Vehicle details section is under development.</p>
+          </div>
+        </div>
+
+        <div class="section-content" id="policy-holder-section">
+          <div class="main-content" style="grid-column: 1 / -1">
+            <h3>Policy Holder Information</h3>
+            <p style="margin-top: 20px; color: #718096">Policy holder section is under development.</p>
+          </div>
+        </div>
+
+        <div class="section-content" id="documents-section">
+          <div class="main-content" style="grid-column: 1 / -1">
+            <h3>Documents</h3>
+            <p style="margin-top: 20px; color: #718096">Documents section is under development.</p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="riskVault.js"></script>
-</body>
+  </body>
+</html>
