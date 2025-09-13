@@ -1,14 +1,68 @@
-function updateProgress() {
+// function updateProgress() {
 
+//     document.querySelectorAll(".checklist-table tbody tr").forEach(row => {
+//     row.style.backgroundColor = "";
+//     });
+//     // Get all checked checkboxes
+//     const checkedCheckboxes = Array.from(document.querySelectorAll(".checkbox-cell input[type='checkbox']")).filter((cb) => cb.checked);
+//     const totalSearches = checkedCheckboxes.length;
+
+//     let completedCount = 0;
+//     let pendingCount = 0;
+
+//     // Analyze each checked checkbox row
+//     checkedCheckboxes.forEach((cb) => {
+//         const row = cb.closest("tr");
+//         if (!row) return;
+
+//         const dateField = row.querySelector(".date-input");
+//         const unableSelect = row.querySelector(".unable-select");
+
+//         // If date is filled, count as completed
+// if (dateField && dateField.value && dateField.value !== "") {
+//     completedCount++;
+//     row.style.backgroundColor = "#97caa0ff";
+//     cb.style.accentColor = "#0d601bff";
+// }
+// // If no date but unable-select has value, count as completed
+// else if (unableSelect && unableSelect.value && unableSelect.value !== "") {
+//     completedCount++;
+//     row.style.backgroundColor = "#97caa0ff";
+//     cb.style.accentColor = "#0d601bff";
+// }
+// // If neither date nor unable-select, count as pending
+// else {
+//     pendingCount++;
+//     row.style.backgroundColor = "#d38b8bff";
+//     cb.style.accentColor = "#f31515ff";
+// }
+//     });
+
+//   // Update counters
+//   document.getElementById("total-searches").textContent = totalSearches;
+//   document.getElementById("completed-count").textContent = completedCount;
+//   document.getElementById("pending-count").textContent = pendingCount;
+
+//   // Calculate and update progress percentage
+//   const progressPercentage = totalSearches > 0 ? (completedCount / totalSearches) * 100 : 0;
+//   document.getElementById("progress-fill").style.width = progressPercentage + "%";
+//   document.getElementById("progress-text").textContent = `${Math.round(progressPercentage)}% Complete (${completedCount}/${totalSearches})`;
+// }
+
+// Initialize progress on page load
+
+function updateProgress() {
     document.querySelectorAll(".checklist-table tbody tr").forEach(row => {
-    row.style.backgroundColor = "";
+        row.style.backgroundColor = "";
     });
+    
     // Get all checked checkboxes
     const checkedCheckboxes = Array.from(document.querySelectorAll(".checkbox-cell input[type='checkbox']")).filter((cb) => cb.checked);
     const totalSearches = checkedCheckboxes.length;
 
     let completedCount = 0;
     let pendingCount = 0;
+    let unableCount = 0; // This tracks unable items for display purposes
 
     // Analyze each checked checkbox row
     checkedCheckboxes.forEach((cb) => {
@@ -20,33 +74,37 @@ function updateProgress() {
 
         // If date is filled, count as completed
         if (dateField && dateField.value && dateField.value !== "") {
-        completedCount++;
-        row.style.backgroundColor = "#62d775ff"; // Light green background for completed
+            completedCount++;
+            row.style.backgroundColor = "#97caa0ff";
+            cb.style.accentColor = "#0d601bff";
         }
         // If no date but unable-select has value, count as completed
         else if (unableSelect && unableSelect.value && unableSelect.value !== "") {
-        completedCount++;
-        row.style.backgroundColor = "#62d775ff"; // Light green background for completed
+            completedCount++; // Still counts as completed for progress
+            unableCount++; // Also counts in unable counter for display
+            row.style.backgroundColor = "#97caa0ff";
+            cb.style.accentColor = "#0d601bff";
         }
         // If neither date nor unable-select, count as pending
         else {
-        pendingCount++;
-            row.style.backgroundColor = "#ff7f7f"; // Light red background for pending
+            pendingCount++;
+            row.style.backgroundColor = "#d38b8bff";
+            cb.style.accentColor = "#f31515ff";
         }
     });
 
-  // Update counters
-  document.getElementById("total-searches").textContent = totalSearches;
-  document.getElementById("completed-count").textContent = completedCount;
-  document.getElementById("pending-count").textContent = pendingCount;
+    // Update counters
+    document.getElementById("total-searches").textContent = totalSearches;
+    document.getElementById("completed-count").textContent = completedCount;
+    document.getElementById("pending-count").textContent = pendingCount;
+    document.getElementById("unable-count").textContent = unableCount;
 
-  // Calculate and update progress percentage
-  const progressPercentage = totalSearches > 0 ? (completedCount / totalSearches) * 100 : 0;
-  document.getElementById("progress-fill").style.width = progressPercentage + "%";
-  document.getElementById("progress-text").textContent = `${Math.round(progressPercentage)}% Complete (${completedCount}/${totalSearches})`;
+    // Calculate progress percentage (completed includes both successful and unable)
+    const progressPercentage = totalSearches > 0 ? (completedCount / totalSearches) * 100 : 0;
+    document.getElementById("progress-fill").style.width = progressPercentage + "%";
+    document.getElementById("progress-text").textContent = `${Math.round(progressPercentage)}% Complete (${completedCount}/${totalSearches})`;
 }
 
-// Initialize progress on page load
 document.addEventListener("DOMContentLoaded", function () {
   updateProgress();
 });
