@@ -146,6 +146,59 @@
         color: #2d3748;
       }
 
+      .claim-input-section {
+        background: #f7fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .claim-input-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #4a5568;
+        white-space: nowrap;
+
+      }
+
+      .claim-input {
+        flex: 1;
+        padding: 10px 12px;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #2d3748;
+        background: white;
+        transition: border-color 0.2s;
+      }
+
+      .claim-input:focus {
+        outline: none;
+        border-color: #3182ce;
+        box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.1);
+      }
+
+      .claim-input-btn {
+        padding: 10px 16px;
+        background: #3182ce;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .claim-input-btn:hover {
+        background: #2c5aa0;
+      }
+
       .checklist-table {
         width: 100%;
         border-collapse: collapse;
@@ -385,6 +438,45 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }
+
+      .additional-info-section {
+        background: #f7fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+      }
+
+      .additional-info-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      .additional-info-textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 12px;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: inherit;
+        background: white;
+        resize: vertical;
+        transition: border-color 0.2s;
+      }
+
+      .additional-info-textarea:focus {
+        outline: none;
+        border-color: #3182ce;
+        box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.1);
+      }
+
+      .additional-info-textarea::placeholder {
+        color: #a0aec0;
+      }
     </style>
   </head>
   <body>
@@ -440,6 +532,28 @@
               <button class="btn btn-secondary">Export PDF</button>
               <button class="btn btn-primary">Save Progress</button>
             </div>
+          </div>
+
+          <!-- Claim Number Input Section -->
+          <div class="claim-input-section">
+            <label class="claim-input-label">Claim Number:</label>
+            <input 
+              type="text" 
+              class="claim-input" 
+              id="claimNumberInput"
+              placeholder="Enter claim number (e.g., RV-2025-0715-A)"
+              value="RV-2025-0715-A"
+            />
+            <button class="claim-input-btn" onclick="updateClaimNumber()">Update</button>
+          </div>
+
+          <div class="additional-info-section">
+            <label class="additional-info-label" for="additionalInfo">Additional Information:</label>
+            <textarea 
+              class="additional-info-textarea" 
+              id="additionalInfo"
+              placeholder="Enter any additional notes, special instructions, or relevant details for this claim..."
+            ></textarea>
           </div>
 
           <div class="stats-grid">
@@ -887,6 +1001,12 @@
                 </td>
                 <td><input type="text" class="handler-input" placeholder="Handler ID"></td>
               </tr>
-              <script src="research-checklist.js"></script>
             </tbody>
-            </html>
+          </table>
+        </div>
+      </div>
+    </div>
+
+   <script src="research-checklist.js"></script>
+  </body>
+</html>

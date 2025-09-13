@@ -120,15 +120,15 @@
       }
 
       function createNewClaim() {
-        const options = confirm("Choose an option:\n\nOK - Go to RiskVault (Main Claims System)\nCancel - Create Research List Only");
-        
-        if (options) {
-          alert("Redirecting to RiskVault main claims system...");
-          window.location.href = 'riskVault.html';
-        } else {
-          alert("Redirecting to Research Checklist creation...");
-          window.location.href = 'research-checklist.html';
-        }
+        // const options = confirm("Choose an option:\n\nOK - Go to RiskVault (Main Claims System)\nCancel - Create Research List Only");
+        window.location.href = 'research-checklist.html';
+        // if (options) {
+        //   alert("Redirecting to RiskVault main claims system...");
+        //   window.location.href = 'research-checklist.html';
+        // } else {
+        //   alert("Redirecting to Research Checklist creation...");
+        //   window.location.href = 'research-checklist.html';
+        // }
       }
 
       function createNewClaimWithNumber(claimNumber) {
