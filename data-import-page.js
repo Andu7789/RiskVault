@@ -2,6 +2,9 @@ let importedData = [];
 let selectedData = [];
 let currentFile = null;
 let filteredData = []; // Store filtered results
+let highlightNames = ["Andy Britain", "Jessica Hall"]; // Array of names to highlight
+let postcodes = ["NR11 8NT", "MK45 3GH"]; // Array of postcodes to highlight
+let carReg = ["N78 OJU", "L99 GTY"]; // Array of car registrations to highlight
 
 // File upload handling
 const uploadArea = document.getElementById('uploadArea');
@@ -154,11 +157,21 @@ function displayDataTable(data) {
         const tr = document.createElement('tr');
         tr.setAttribute('data-original-index', index);
 
+        // headers.forEach(header => {
+        //     const td = document.createElement('td');
+        //     td.textContent = row[header] || '';
+        //     tr.appendChild(td);
+        // });
+
         headers.forEach(header => {
             const td = document.createElement('td');
-            td.textContent = row[header] || '';
+            const cellValue = row[header] || '';
+            
+            // Always process for highlighting (returns original if no matches)
+            td.innerHTML = highlightValuesInCell(cellValue);
+            
             tr.appendChild(td);
-        });
+        })
 
         // Add action button
         const actionTd = document.createElement('td');
@@ -299,11 +312,21 @@ function displayFilteredTable(data) {
         const tr = document.createElement('tr');
         tr.setAttribute('data-original-index', originalIndex);
 
+        // headers.forEach(header => {
+        //     const td = document.createElement('td');
+        //     td.textContent = row[header] || '';
+        //     tr.appendChild(td);
+        // });
+
         headers.forEach(header => {
             const td = document.createElement('td');
-            td.textContent = row[header] || '';
+            const cellValue = row[header] || '';
+            
+            // Always process for highlighting (returns original if no matches)
+            td.innerHTML = highlightValuesInCell(cellValue);
+            
             tr.appendChild(td);
-        });
+        })
 
         // Add action button
         const actionTd = document.createElement('td');
@@ -525,3 +548,63 @@ function highlightSelectedRows() {
         }
     });
 }
+
+function highlightValuesInCell(cellValue) {
+    if (!cellValue || typeof cellValue !== 'string') return cellValue;
+    
+    let highlightedValue = cellValue;
+    
+    // Loop through each name and highlight it
+    highlightNames.forEach(name => {
+        const regex = new RegExp(`(${name})`, 'gi');
+        highlightedValue = highlightedValue.replace(regex, '<span class="highlighted-name">$1</span>');
+    });
+    
+    // Loop through each postcode and highlight it
+    postcodes.forEach(postcode => {
+        const regex = new RegExp(`(${postcode})`, 'gi');
+        highlightedValue = highlightedValue.replace(regex, '<span class="highlighted-name">$1</span>');
+    });
+
+    // Loop through each car registration and highlight it
+    carReg.forEach(reg => {
+        const regex = new RegExp(`(${reg})`, 'gi');
+        highlightedValue = highlightedValue.replace(regex, '<span class="highlighted-name">$1</span>');
+    });
+    
+    return highlightedValue;
+}
+
+function updateHighlightNames(newNames) {
+    if (Array.isArray(newNames)) {
+        highlightNames = newNames;
+        refreshTableDisplay();
+    }
+}
+
+// Function to update the highlight postcodes array
+function updateHighlightPostcodes(newPostcodes) {
+    if (Array.isArray(newPostcodes)) {
+        postcodes = newPostcodes;
+        refreshTableDisplay();
+    }
+}
+
+// Function to update the highlight car registrations array
+function updateHighlightCarReg(newCarReg) {
+    if (Array.isArray(newCarReg)) {
+        carReg = newCarReg;
+        refreshTableDisplay();
+    }
+}
+
+// Helper function to refresh the table display
+function refreshTableDisplay() {
+    if (filteredData.length > 0) {
+        displayFilteredTable(filteredData);
+    } else if (importedData.length > 0) {
+        displayDataTable(importedData);
+    }
+}
+
+// updateHighlightNames(["Fiona Clark", "Mary Johnson"]);
